@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Abrir URL com data atual</title>
+  <title>Abrir URL com data do dispositivo</title>
   <style>
     body {
       font-family: sans-serif;
@@ -13,14 +13,14 @@
     button {
       padding: 12px 24px;
       font-size: 16px;
-      background-color: #007bff;
+      background-color: #28a745;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #0056b3;
+      background-color: #1e7e34;
     }
     p {
       margin-top: 20px;
@@ -30,19 +30,24 @@
   </style>
 </head>
 <body>
-  <h1>Abrir Gestão de Pedidos com Data Atual</h1>
+  <h1>Abrir link com a data atual do dispositivo</h1>
   <button onclick="abrirLink()">Abrir URL</button>
-  <p>A data será ajustada automaticamente para hoje.</p>
+  <p>O link usará a data do seu dispositivo (23:00 UTC do dia atual).</p>
 
   <script>
     function abrirLink() {
       const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
 
-      // Data de hoje às 00:00 UTC
+      // Data atual do dispositivo (no fuso local)
       const hoje = new Date();
-      hoje.setUTCHours(0, 0, 0, 0);
-      const isoDate = hoje.toISOString();
-      console.log(hoje)
+      const ano = hoje.getFullYear();
+      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
+      const dia = String(hoje.getDate()).padStart(2, '0');
+
+      // Simula horário "23:00:00.000Z" do dia local (UTC)
+      const dataFinal = new Date(`${ano}-${mes}-${dia}T23:00:00.000Z`);
+      const isoDate = dataFinal.toISOString();
+
       // Parâmetros fixos
       const params = new URLSearchParams({
         "dateRange[from]": isoDate,
@@ -65,7 +70,6 @@
 
       statusList.forEach(status => params.append("status", status));
 
-      // URL final
       const finalUrl = `${baseUrl}?${params.toString()}`;
       window.open(finalUrl, "_blank");
     }
