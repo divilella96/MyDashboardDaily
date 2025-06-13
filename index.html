@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Abrir URL com data atual</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      padding: 40px;
+      background-color: #f9f9f9;
+      text-align: center;
+    }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <h1>Abrir Gestão de Pedidos com Data Atual</h1>
+  <button onclick="abrirLink()">Abrir URL</button>
+  <p>A data será ajustada automaticamente para hoje.</p>
+
+  <script>
+    function abrirLink() {
+      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
+
+      // Data de hoje às 00:00 UTC
+      const hoje = new Date();
+      hoje.setUTCHours(0, 0, 0, 0);
+      const isoDate = hoje.toISOString();
+
+      // Parâmetros fixos
+      const params = new URLSearchParams({
+        "dateRange[from]": isoDate,
+        serviceTypes: "190",
+        pageIndex: "1",
+        pageSize: "50",
+      });
+
+      // Múltiplos status
+      const statusList = [
+        "Pending",
+        "InAssignment",
+        "Open",
+        "Invoicing",
+        "Processing",
+        "Complete",
+        "InTransit",
+        "Incidence",
+      ];
+
+      statusList.forEach(status => params.append("status", status));
+
+      // URL final
+      const finalUrl = `${baseUrl}?${params.toString()}`;
+      window.open(finalUrl, "_blank");
+    }
+  </script>
+</body>
+</html>
