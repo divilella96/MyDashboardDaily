@@ -2,25 +2,25 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Abrir URL com data do dispositivo</title>
+  <title>Abrir URL com data e hora atual</title>
   <style>
     body {
       font-family: sans-serif;
       padding: 40px;
-      background-color: #f9f9f9;
+      background-color: #f0f0f0;
       text-align: center;
     }
     button {
       padding: 12px 24px;
       font-size: 16px;
-      background-color: #28a745;
+      background-color: #007bff;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
     }
     button:hover {
-      background-color: #1e7e34;
+      background-color: #0056b3;
     }
     p {
       margin-top: 20px;
@@ -30,25 +30,18 @@
   </style>
 </head>
 <body>
-  <h1>Abrir link com a data atual do dispositivo</h1>
+  <h1>Abrir link com data e hora atual</h1>
   <button onclick="abrirLink()">Abrir URL</button>
-  <p>O link usará a data do seu dispositivo (23:00 UTC do dia atual).</p>
+  <p>O parâmetro de data será a data e hora do seu dispositivo.</p>
 
   <script>
     function abrirLink() {
       const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
 
-      // Data atual do dispositivo (no fuso local)
-      const hoje = new Date();
-      const ano = hoje.getFullYear();
-      const mes = String(hoje.getMonth() + 1).padStart(2, '0');
-      const dia = String(hoje.getDate()).padStart(2, '0');
+      // Usa data e hora atual do dispositivo
+      const agora = new Date();
+      const isoDate = agora.toISOString(); // Formato: YYYY-MM-DDTHH:MM:SS.sssZ
 
-      // Simula horário "23:00:00.000Z" do dia local (UTC)
-      const dataFinal = new Date(`${ano}-${mes}-${dia}T23:00:00.000Z`);
-      const isoDate = dataFinal.toISOString();
-
-      // Parâmetros fixos
       const params = new URLSearchParams({
         "dateRange[from]": isoDate,
         serviceTypes: "190",
@@ -56,7 +49,6 @@
         pageSize: "50",
       });
 
-      // Múltiplos status
       const statusList = [
         "Pending",
         "InAssignment",
