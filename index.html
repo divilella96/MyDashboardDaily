@@ -42,7 +42,7 @@
       const hoje = new Date();
       hoje.setUTCHours(0, 0, 0, 0);
       const isoDate = hoje.toISOString();
-
+      console.log(hoje)
       // Parâmetros fixos
       const params = new URLSearchParams({
         "dateRange[from]": isoDate,
