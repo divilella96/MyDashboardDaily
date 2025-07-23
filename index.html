@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Abrir URL com data e hora atual</title>
+  <title>Abrir URLs com data e hora atual</title>
   <style>
     body {
       font-family: sans-serif;
@@ -12,6 +12,7 @@
     }
     button {
       padding: 12px 24px;
+      margin: 10px;
       font-size: 16px;
       background-color: #007bff;
       color: white;
@@ -22,29 +23,31 @@
     button:hover {
       background-color: #0056b3;
     }
-    p {
-      margin-top: 20px;
-      font-size: 14px;
-      color: #333;
+    h1 {
+      margin-bottom: 30px;
     }
   </style>
 </head>
 <body>
-  <h1>Abrir link com data e hora atual</h1>
-  <button onclick="abrirLink()">Abrir URL</button>
-  <p>O parâmetro de data será a data e hora do seu dispositivo.</p>
+  <h1>Abrir links com data e hora atual do dispositivo</h1>
+
+  <button onclick="abrirLink(190)">Rato - Encomendas Home (190)</button>
+  <button onclick="abrirLink(191)">Rato - Click & Collect (191)</button>
+  <button onclick="abrirLink(216)">Cova da Piedade - Encomendas Home (216)</button>
+  <button onclick="abrirLink(217)">Cova da Piedade - Click & Collect (217)</button>
+  
 
   <script>
-    function abrirLink() {
+    function abrirLink(serviceTypeId) {
       const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
 
-      // Usa data e hora atual do dispositivo
+      // Data e hora atual do dispositivo em ISO (com fuso UTC)
       const agora = new Date();
-      const isoDate = agora.toISOString(); // Formato: YYYY-MM-DDTHH:MM:SS.sssZ
+      const isoDate = agora.toISOString();
 
       const params = new URLSearchParams({
         "dateRange[from]": isoDate,
-        serviceTypes: "190",
+        serviceTypes: serviceTypeId.toString(),
         pageIndex: "1",
         pageSize: "50",
       });
