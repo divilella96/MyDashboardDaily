@@ -31,25 +31,55 @@
 <body>
   <h1>Abrir links com data e hora atual do dispositivo</h1>
 
-  <button onclick="abrirLink(190)">Rato - Encomendas Home (190)</button>
-  <button onclick="abrirLink(191)">Rato - Click & Collect (191)</button>
-  <button onclick="abrirLink(216)">Cova da Piedade - Encomendas Home (216)</button>
-  <button onclick="abrirLink(217)">Cova da Piedade - Click & Collect (217)</button>
+  <button onclick="abrirOrderManagement(190)">Rato - Encomendas Home(190)</button>
+  <button onclick="abrirOrderManagement(191)">Rato - Click & Collect (191)</button>
+  <button onclick="abrirOrderManagement(216)">Cova da Piedade - Encomendas Home (216)</button>
+  <button onclick="abrirOrderManagement(217)">Cova da Piedade - Click & Collect (217)</button>
   
+  <button onclick="abrirLiveOperations()">Rato- Encomendas em Direto </button>
 
   <script>
-    function abrirLink(serviceTypeId) {
-      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
+    function getStatusList() {
+      return [
+        "Pending",
+        "InAssignment",
+        "Open",
+        "Invoicing",
+        "Processing",
+        "Complete",
+        "InTransit",
+        "Incidence"
+      ];
+    }
 
-      // Data e hora atual do dispositivo em ISO (com fuso UTC)
-      const agora = new Date();
-      const isoDate = agora.toISOString();
+    function abrirOrderManagement(serviceTypeId) {
+      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
+      const agora = new Date().toISOString();
 
       const params = new URLSearchParams({
-        "dateRange[from]": isoDate,
+        "dateRange[from]": agora,
         serviceTypes: serviceTypeId.toString(),
         pageIndex: "1",
-        pageSize: "50",
+        pageSize: "50"
+      });
+
+      getStatusList().forEach(status => params.append("status", status));
+
+      const finalUrl = `${baseUrl}?${params.toString()}`;
+      window.open(finalUrl, "_blank");
+    }
+
+    function abrirLiveOperations() {
+      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/live-operations";
+      const agora = new Date().toISOString();
+
+      const params = new URLSearchParams({
+        deliveryDeadline: agora,
+        retailer: "29",
+        store: "133",
+        serviceType: "190",
+        pageIndex: "1",
+        pageSize: "20"
       });
 
       const statusList = [
@@ -61,6 +91,8 @@
         "Complete",
         "InTransit",
         "Incidence",
+        "Cancelled",
+        "ManualAssignment"
       ];
 
       statusList.forEach(status => params.append("status", status));
