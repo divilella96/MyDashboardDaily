@@ -64,6 +64,7 @@
       <h2>Cova da Piedade</h2>
       <button onclick="abrirOrderManagement(216)">Cova - Encomendas Home (216)</button>
       <button onclick="abrirOrderManagement(217)">Cova - Click & Collect (217)</button>
+      <button onclick="abrirLiveOperationsCova()">Cova - Encomendas em Direto</button>
     </div>
   </div>
 
@@ -129,6 +130,37 @@
       const finalUrl = `${baseUrl}?${params.toString()}`;
       window.open(finalUrl, "_blank");
     }
+
+    function abrirLiveOperationsCova() {
+    const baseUrl = "https://perform.lyzer.tech/pt/app/operations/live-operations";
+    const agora = new Date().toISOString();
+
+    const params = new URLSearchParams({
+      deliveryDeadline: agora,
+      retailer: "29",
+      store: "145",
+      serviceType: "216",
+      pageIndex: "1",
+      pageSize: "20"
+    });
+
+    const statusList = [
+      "Pending",
+      "InAssignment",
+      "Open",
+      "Invoicing",
+      "Processing",
+      "Complete",
+      "InTransit",
+      "Incidence",
+      "Cancelled",
+      "ManualAssignment"
+    ];
+
+    statusList.forEach(status => params.append("status", status));
+
+    const finalUrl = `${baseUrl}?${params.toString()}`;
+    window.open(finalUrl, "_blank");
   </script>
 </body>
 </html>
