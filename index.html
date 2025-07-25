@@ -8,35 +8,64 @@
       font-family: sans-serif;
       padding: 40px;
       background-color: #f0f0f0;
-      text-align: center;
     }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .coluna {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .coluna h2 {
+      margin-bottom: 15px;
+    }
+
     button {
       padding: 12px 24px;
-      margin: 10px;
+      margin: 10px 0;
       font-size: 16px;
       background-color: #007bff;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
+      width: 260px;
     }
+
     button:hover {
       background-color: #0056b3;
-    }
-    h1 {
-      margin-bottom: 30px;
     }
   </style>
 </head>
 <body>
   <h1>Abrir links com data e hora atual do dispositivo</h1>
 
-  <button onclick="abrirOrderManagement(190)">Rato - Encomendas Home(190)</button>
-  <button onclick="abrirOrderManagement(191)">Rato - Click & Collect (191)</button>
-  <button onclick="abrirOrderManagement(216)">Cova da Piedade - Encomendas Home (216)</button>
-  <button onclick="abrirOrderManagement(217)">Cova da Piedade - Click & Collect (217)</button>
-  
-  <button onclick="abrirLiveOperations()">Rato - Encomendas em Direto </button>
+  <div class="container">
+    <div class="coluna">
+      <h2>Rato</h2>
+      <button onclick="abrirOrderManagement(190)">Rato - Encomendas Home (190)</button>
+      <button onclick="abrirOrderManagement(191)">Rato - Click & Collect (191)</button>
+      <button onclick="abrirLiveOperations()">Rato - Encomendas em Direto</button>
+    </div>
+
+    <div class="coluna">
+      <h2>Cova da Piedade</h2>
+      <button onclick="abrirOrderManagement(216)">Cova - Encomendas Home (216)</button>
+      <button onclick="abrirOrderManagement(217)">Cova - Click & Collect (217)</button>
+    </div>
+  </div>
 
   <script>
     function getStatusList() {
