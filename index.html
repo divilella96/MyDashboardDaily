@@ -92,7 +92,7 @@
 
       url.searchParams.append("dateRange[from]", agora);
       // Rato: Loja 133 — C&C (216, 217) + Encomendas (191, 190)
-      ["216", "217", "191", "190"].forEach(st => url.searchParams.append("serviceTypes", st));
+      ["191", "190"].forEach(st => url.searchParams.append("serviceTypes", st));
       getStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
       url.searchParams.append("pageSize", "50");
