@@ -54,13 +54,13 @@
   <div class="container">
     <div class="coluna">
       <h2>Rato</h2>
-      <button onclick="abrirOrderManagementRato()">Rato - Encomendas e Click & Collect</button>
-      <button onclick="abrirLiveOperationsRato()">Rato - Encomendas em Direto</button>
+      <button onclick="abrirOrderManagementRato()">Rato - Encomendas e C&C</button>
+      <button onclick="abrirLiveOperationsRato()">Rato - Em Direto</button>
     </div>
     <div class="coluna">
       <h2>Cova da Piedade</h2>
-      <button onclick="abrirOrderManagementCova()">Cova - Encomendas e Click & Collect</button>
-      <button onclick="abrirLiveOperationsCova()">Cova - Encomendas em Direto</button>
+      <button onclick="abrirOrderManagementCova()">Cova - Encomendas e C&C</button>
+      <button onclick="abrirLiveOperationsCova()">Cova - Em Direto</button>
     </div>
   </div>
 
@@ -91,6 +91,7 @@
       const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
 
       url.searchParams.append("dateRange[from]", agora);
+      // Rato: Loja 133 — C&C (216, 217) + Encomendas (191, 190)
       ["216", "217", "191", "190"].forEach(st => url.searchParams.append("serviceTypes", st));
       getStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
@@ -104,6 +105,7 @@
       const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
 
       url.searchParams.append("dateRange[from]", agora);
+      // Cova da Piedade: Loja 145 — C&C (217, 216 apenas)
       ["217", "216"].forEach(st => url.searchParams.append("serviceTypes", st));
       getStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
@@ -118,8 +120,8 @@
 
       url.searchParams.append("deliveryDeadline", agora);
       url.searchParams.append("retailer", "29");
-      url.searchParams.append("store", "133");
-      url.searchParams.append("serviceType", "190");
+      url.searchParams.append("store", "133"); // Rato
+      url.searchParams.append("serviceType", "190"); // Encomenda
       getFullStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
       url.searchParams.append("pageSize", "20");
@@ -133,8 +135,8 @@
 
       url.searchParams.append("deliveryDeadline", agora);
       url.searchParams.append("retailer", "29");
-      url.searchParams.append("store", "145");
-      url.searchParams.append("serviceType", "216");
+      url.searchParams.append("store", "145"); // Cova da Piedade
+      url.searchParams.append("serviceType", "216"); // Encomenda
       getFullStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
       url.searchParams.append("pageSize", "20");
