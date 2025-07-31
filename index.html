@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Abrir URLs com data e hora atual</title>
+  <title>Links com Data Atual</title>
   <style>
     body {
       font-family: sans-serif;
@@ -36,7 +36,7 @@
       padding: 12px 24px;
       margin: 10px 0;
       font-size: 16px;
-      background-color: #007bff;
+      background-color: #28a745;
       color: white;
       border: none;
       border-radius: 8px;
@@ -45,33 +45,29 @@
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #218838;
     }
   </style>
 </head>
 <body>
-  <h1>Abrir links com data e hora atual do dispositivo</h1>
+  <h1>Abrir Links com Data Atual</h1>
 
   <div class="container">
     <!-- Coluna Rato -->
     <div class="coluna">
       <h2>Rato</h2>
-      <button onclick="abrirOrderManagement(190)">Rato - Encomendas Home</button>
-      <button onclick="abrirOrderManagement(191)">Rato - Click & Collect</button>
-      <button onclick="abrirLiveOperations()">Rato - Encomendas em Direto</button>
+      <button onclick="abrirTudoRato()">Abrir Tudo - Rato</button>
     </div>
 
     <!-- Coluna Cova da Piedade -->
     <div class="coluna">
       <h2>Cova da Piedade</h2>
-      <button onclick="abrirOrderManagement(216)">Cova - Encomendas Home</button>
-      <button onclick="abrirOrderManagement(217)">Cova - Click & Collect</button>
-      <button onclick="abrirLiveOperationsCova()">Cova - Encomendas em Direto</button>
+      <button onclick="abrirTudoCova()">Abrir Tudo - Cova da Piedade</button>
     </div>
   </div>
 
   <script>
-    function getStatusList() {
+    function getStatusListOrder() {
       return [
         "Pending",
         "InAssignment",
@@ -84,28 +80,37 @@
       ];
     }
 
-    function abrirOrderManagement(serviceTypeId) {
-      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/order-management";
-      const agora = new Date().toISOString();
+    function getStatusListLive() {
+      return [
+        "Pending",
+        "InAssignment",
+        "Open",
+        "Invoicing",
+        "Processing",
+        "Complete",
+        "InTransit",
+        "Incidence",
+        "Cancelled",
+        "ManualAssignment"
+      ];
+    }
 
-      const params = new URLSearchParams({
+    function abrirTudoRato() {
+      const agora = new Date().toISOString();
+      
+      // Order Management (190 + 191)
+      const orderParams = new URLSearchParams({
         "dateRange[from]": agora,
-        serviceTypes: serviceTypeId.toString(),
+        serviceTypes: "190,191",
         pageIndex: "1",
         pageSize: "50"
       });
+      getStatusListOrder().forEach(status => orderParams.append("status", status));
+      const orderURL = `https://perform.lyzer.tech/pt/app/operations/order-management?${orderParams.toString()}`;
+      window.open(orderURL, "_blank");
 
-      getStatusList().forEach(status => params.append("status", status));
-
-      const finalUrl = `${baseUrl}?${params.toString()}`;
-      window.open(finalUrl, "_blank");
-    }
-
-    function abrirLiveOperations() {
-      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/live-operations";
-      const agora = new Date().toISOString();
-
-      const params = new URLSearchParams({
+      // Live Operations (190)
+      const liveParams = new URLSearchParams({
         deliveryDeadline: agora,
         retailer: "29",
         store: "133",
@@ -113,31 +118,27 @@
         pageIndex: "1",
         pageSize: "20"
       });
-
-      const statusList = [
-        "Pending",
-        "InAssignment",
-        "Open",
-        "Invoicing",
-        "Processing",
-        "Complete",
-        "InTransit",
-        "Incidence",
-        "Cancelled",
-        "ManualAssignment"
-      ];
-
-      statusList.forEach(status => params.append("status", status));
-
-      const finalUrl = `${baseUrl}?${params.toString()}`;
-      window.open(finalUrl, "_blank");
+      getStatusListLive().forEach(status => liveParams.append("status", status));
+      const liveURL = `https://perform.lyzer.tech/pt/app/operations/live-operations?${liveParams.toString()}`;
+      window.open(liveURL, "_blank");
     }
 
-    function abrirLiveOperationsCova() {
-      const baseUrl = "https://perform.lyzer.tech/pt/app/operations/live-operations";
+    function abrirTudoCova() {
       const agora = new Date().toISOString();
+      
+      // Order Management (216 + 217)
+      const orderParams = new URLSearchParams({
+        "dateRange[from]": agora,
+        serviceTypes: "216,217",
+        pageIndex: "1",
+        pageSize: "50"
+      });
+      getStatusListOrder().forEach(status => orderParams.append("status", status));
+      const orderURL = `https://perform.lyzer.tech/pt/app/operations/order-management?${orderParams.toString()}`;
+      window.open(orderURL, "_blank");
 
-      const params = new URLSearchParams({
+      // Live Operations (216)
+      const liveParams = new URLSearchParams({
         deliveryDeadline: agora,
         retailer: "29",
         store: "145",
@@ -145,24 +146,9 @@
         pageIndex: "1",
         pageSize: "20"
       });
-
-      const statusList = [
-        "Pending",
-        "InAssignment",
-        "Open",
-        "Invoicing",
-        "Processing",
-        "Complete",
-        "InTransit",
-        "Incidence",
-        "Cancelled",
-        "ManualAssignment"
-      ];
-
-      statusList.forEach(status => params.append("status", status));
-
-      const finalUrl = `${baseUrl}?${params.toString()}`;
-      window.open(finalUrl, "_blank");
+      getStatusListLive().forEach(status => liveParams.append("status", status));
+      const liveURL = `https://perform.lyzer.tech/pt/app/operations/live-operations?${liveParams.toString()}`;
+      window.open(liveURL, "_blank");
     }
   </script>
 </body>
