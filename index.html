@@ -2,16 +2,16 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <title>Links com Data Atual</title>
+  <title>Abrir URLs com data e hora atual</title>
   <style>
     body {
       font-family: sans-serif;
       padding: 40px;
       background-color: #f0f0f0;
+      text-align: center;
     }
 
     h1 {
-      text-align: center;
       margin-bottom: 30px;
     }
 
@@ -25,49 +25,47 @@
     .coluna {
       display: flex;
       flex-direction: column;
-      align-items: center;
+      gap: 10px;
+      min-width: 250px;
     }
 
     .coluna h2 {
-      margin-bottom: 15px;
+      margin-bottom: 10px;
     }
 
     button {
       padding: 12px 24px;
-      margin: 10px 0;
-      font-size: 16px;
-      background-color: #28a745;
+      font-size: 15px;
+      background-color: #007bff;
       color: white;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      width: 260px;
     }
 
     button:hover {
-      background-color: #218838;
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>Abrir Links com Data Atual</h1>
+  <h1>Abrir links com data e hora atual do dispositivo</h1>
 
   <div class="container">
-    <!-- Coluna Rato -->
     <div class="coluna">
       <h2>Rato</h2>
-      <button onclick="abrirTudoRato()">Abrir Tudo - Rato</button>
+      <button onclick="abrirOrderManagementRato()">Rato - Encomendas e Click & Collect</button>
+      <button onclick="abrirLiveOperationsRato()">Rato - Encomendas em Direto</button>
     </div>
-
-    <!-- Coluna Cova da Piedade -->
     <div class="coluna">
       <h2>Cova da Piedade</h2>
-      <button onclick="abrirTudoCova()">Abrir Tudo - Cova da Piedade</button>
+      <button onclick="abrirOrderManagementCova()">Cova - Encomendas e Click & Collect</button>
+      <button onclick="abrirLiveOperationsCova()">Cova - Encomendas em Direto</button>
     </div>
   </div>
 
   <script>
-    function getStatusListOrder() {
+    function getStatusList() {
       return [
         "Pending",
         "InAssignment",
@@ -80,75 +78,68 @@
       ];
     }
 
-    function getStatusListLive() {
+    function getFullStatusList() {
       return [
-        "Pending",
-        "InAssignment",
-        "Open",
-        "Invoicing",
-        "Processing",
-        "Complete",
-        "InTransit",
-        "Incidence",
+        ...getStatusList(),
         "Cancelled",
         "ManualAssignment"
       ];
     }
 
-    function abrirTudoRato() {
+    function abrirOrderManagementRato() {
       const agora = new Date().toISOString();
-      
-      // Order Management (190 + 191)
-      const orderParams = new URLSearchParams({
-        "dateRange[from]": agora,
-        serviceTypes: "190,191",
-        pageIndex: "1",
-        pageSize: "50"
-      });
-      getStatusListOrder().forEach(status => orderParams.append("status", status));
-      const orderURL = `https://perform.lyzer.tech/pt/app/operations/order-management?${orderParams.toString()}`;
-      window.open(orderURL, "_blank");
+      const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
 
-      // Live Operations (190)
-      const liveParams = new URLSearchParams({
-        deliveryDeadline: agora,
-        retailer: "29",
-        store: "133",
-        serviceType: "190",
-        pageIndex: "1",
-        pageSize: "20"
-      });
-      getStatusListLive().forEach(status => liveParams.append("status", status));
-      const liveURL = `https://perform.lyzer.tech/pt/app/operations/live-operations?${liveParams.toString()}`;
-      window.open(liveURL, "_blank");
+      url.searchParams.append("dateRange[from]", agora);
+      ["216", "217", "191", "190"].forEach(st => url.searchParams.append("serviceTypes", st));
+      getStatusList().forEach(status => url.searchParams.append("status", status));
+      url.searchParams.append("pageIndex", "1");
+      url.searchParams.append("pageSize", "50");
+
+      window.open(url.toString(), "_blank");
     }
 
-    function abrirTudoCova() {
+    function abrirOrderManagementCova() {
       const agora = new Date().toISOString();
-      
-      // Order Management (216 + 217)
-      const orderParams = new URLSearchParams({
-        "dateRange[from]": agora,
-        serviceTypes: "216,217",
-        pageIndex: "1",
-        pageSize: "50"
-      });
-      getStatusListOrder().forEach(status => orderParams.append("status", status));
-      const orderURL = `https://perform.lyzer.tech/pt/app/operations/order-management?${orderParams.toString()}`;
-      window.open(orderURL, "_blank");
+      const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
 
-      // Live Operations (216)
-      const liveParams = new URLSearchParams({
-        deliveryDeadline: agora,
-        retailer: "29",
-        store: "145",
-        serviceType: "216",
-        pageIndex: "1",
-        pageSize: "20"
-      });
-      getStatusListLive().forEach(status => liveParams.append("status", status));
-      const liveURL = `https://perform.lyzer.tech/pt/app/operations/live-operations?${liveParams.toString()}`;
-      window.open(liveURL, "_blank");
+      url.searchParams.append("dateRange[from]", agora);
+      ["217", "216"].forEach(st => url.searchParams.append("serviceTypes", st));
+      getStatusList().forEach(status => url.searchParams.append("status", status));
+      url.searchParams.append("pageIndex", "1");
+      url.searchParams.append("pageSize", "50");
+
+      window.open(url.toString(), "_blank");
+    }
+
+    function abrirLiveOperationsRato() {
+      const agora = new Date().toISOString();
+      const url = new URL("https://perform.lyzer.tech/pt/app/operations/live-operations");
+
+      url.searchParams.append("deliveryDeadline", agora);
+      url.searchParams.append("retailer", "29");
+      url.searchParams.append("store", "133");
+      url.searchParams.append("serviceType", "190");
+      getFullStatusList().forEach(status => url.searchParams.append("status", status));
+      url.searchParams.append("pageIndex", "1");
+      url.searchParams.append("pageSize", "20");
+
+      window.open(url.toString(), "_blank");
+    }
+
+    function abrirLiveOperationsCova() {
+      const agora = new Date().toISOString();
+      const url = new URL("https://perform.lyzer.tech/pt/app/operations/live-operations");
+
+      url.searchParams.append("deliveryDeadline", agora);
+      url.searchParams.append("retailer", "29");
+      url.searchParams.append("store", "145");
+      url.searchParams.append("serviceType", "216");
+      getFullStatusList().forEach(status => url.searchParams.append("status", status));
+      url.searchParams.append("pageIndex", "1");
+      url.searchParams.append("pageSize", "20");
+
+      window.open(url.toString(), "_blank");
     }
   </script>
 </body>
