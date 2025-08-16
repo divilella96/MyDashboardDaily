@@ -60,12 +60,6 @@
           <button onclick="abrirOrderManagementCova()">Cova - Encomendas e C&C</button>
           <button onclick="abrirLiveOperationsCova()">Cova - Em Direto</button>
         </div>
- 
-        <div class="coluna">
-          <h2>Rato</h2>
-          <button onclick="abrirOrderManagementRato()">Rato - Encomendas e C&C</button>
-          <button onclick="abrirLiveOperationsRato()">Rato - Em Direto</button>
-        </div>
     </div>
 
   <script>
@@ -90,19 +84,7 @@
       ];
     }
 
-    function abrirOrderManagementRato() {
-      const agora = new Date().toISOString();
-      const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
-
-      url.searchParams.append("dateRange[from]", agora);
-      // Rato: Loja 133 — C&C (216, 217) + Encomendas (191, 190)
-      ["191", "190"].forEach(st => url.searchParams.append("serviceTypes", st));
-      getStatusList().forEach(status => url.searchParams.append("status", status));
-      url.searchParams.append("pageIndex", "1");
-      url.searchParams.append("pageSize", "50");
-
-      window.open(url.toString(), "_blank");
-    }
+  
 
     function abrirOrderManagementCova() {
       const agora = new Date().toISOString();
@@ -118,21 +100,7 @@
       window.open(url.toString(), "_blank");
     }
 
-    function abrirLiveOperationsRato() {
-      const agora = new Date().toISOString();
-      const url = new URL("https://perform.lyzer.tech/pt/app/operations/live-operations");
-
-      url.searchParams.append("deliveryDeadline", agora);
-      url.searchParams.append("retailer", "29");
-      url.searchParams.append("store", "133"); // Rato
-      url.searchParams.append("serviceType", "190"); // Encomenda
-      getFullStatusList().forEach(status => url.searchParams.append("status", status));
-      url.searchParams.append("pageIndex", "1");
-      url.searchParams.append("pageSize", "20");
-
-      window.open(url.toString(), "_blank");
-    }
-
+   
     function abrirLiveOperationsCova() {
       const agora = new Date().toISOString();
       const url = new URL("https://perform.lyzer.tech/pt/app/operations/live-operations");
