@@ -59,6 +59,7 @@
           <h2>Cova da Piedade</h2>
           <button onclick="abrirOrderManagementCova()">Cova - Encomendas e C&C</button>
           <button onclick="abrirLiveOperationsCova()">Cova - Em Direto</button>
+          <button onclick="abrirMensagemWhatsApp()">Gerar mensagem WhatsApp</button>
         </div>
     </div>
 
@@ -114,6 +115,10 @@
       url.searchParams.append("pageSize", "20");
 
       window.open(url.toString(), "_blank");
+    }
+
+     function abrirMensagemWhatsApp() {
+      window.open("mensagem.html", "_blank");
     }
   </script>
 </body>
