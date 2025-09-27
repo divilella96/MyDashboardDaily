@@ -89,12 +89,10 @@
   
 
     function abrirOrderManagementCova() {
-      const agora = new Date().toISOString();
       const url = new URL("https://perform.lyzer.tech/pt/app/operations/order-management");
 
-      url.searchParams.append("dateRange[from]", agora);
-      // Cova da Piedade: Loja 145 — C&C (217, 216 apenas)
-      ["217", "216"].forEach(st => url.searchParams.append("serviceTypes", st));
+      url.searchParams.append("dateRange[from]", "2025-09-27T06:37:02.626Z");
+      url.searchParams.append("stores", "145");
       getStatusList().forEach(status => url.searchParams.append("status", status));
       url.searchParams.append("pageIndex", "1");
       url.searchParams.append("pageSize", "50");
